@@ -120,6 +120,11 @@ namespace pcl
     */
   struct PointXYZRGBL;
 
+  /** \brief Members: float x, y, z, rgb, uint32_t label, float intensity
+    * \ingroup common
+    */
+  struct PointXYZRGBIL;
+
   /** \brief Members: float x, y, z, h, s, v
     * \ingroup common
     */
@@ -413,6 +418,16 @@ POINT_CLOUD_REGISTER_POINT_STRUCT (pcl::_PointXYZRGBL,
     (uint32_t, label, label)
 )
 POINT_CLOUD_REGISTER_POINT_WRAPPER(pcl::PointXYZRGBL, pcl::_PointXYZRGBL)
+
+POINT_CLOUD_REGISTER_POINT_STRUCT (pcl::_PointXYZRGBIL,
+    (float, x, x)
+    (float, y, y)
+    (float, z, z)
+    (uint32_t, rgba, rgba)
+    (uint32_t, label, label)
+    (float, intensity, intensity)
+)
+POINT_CLOUD_REGISTER_POINT_WRAPPER(pcl::PointXYZRGBIL, pcl::_PointXYZRGBIL)
 
 POINT_CLOUD_REGISTER_POINT_STRUCT (pcl::_PointXYZHSV,
     (float, x, x)

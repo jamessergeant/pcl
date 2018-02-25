@@ -40,4 +40,4 @@
 #include <pcl/segmentation/cpc_segmentation.h>
 #include <pcl/segmentation/impl/cpc_segmentation.hpp>
 
-PCL_INSTANTIATE(CPCSegmentation, (pcl::PointXYZ)(pcl::PointXYZRGB)(pcl::PointXYZRGBA)(pcl::PointXYZRGBNormal))
+PCL_INSTANTIATE(CPCSegmentation, (pcl::PointXYZ)(pcl::PointXYZRGB)(pcl::PointXYZRGBIL)(pcl::PointXYZRGBA)(pcl::PointXYZRGBNormal))

@@ -40,4 +40,4 @@
 #include <pcl/segmentation/lccp_segmentation.h>
 #include <pcl/segmentation/impl/lccp_segmentation.hpp>
 
-PCL_INSTANTIATE(LCCPSegmentation, (pcl::PointXYZ)(pcl::PointXYZRGB)(pcl::PointXYZRGBA)(pcl::PointXYZRGBNormal))
+PCL_INSTANTIATE(LCCPSegmentation, (pcl::PointXYZ)(pcl::PointXYZRGB)(pcl::PointXYZRGBIL)(pcl::PointXYZRGBA)(pcl::PointXYZRGBNormal))

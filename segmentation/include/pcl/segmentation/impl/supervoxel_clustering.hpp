@@ -725,12 +725,19 @@ namespace pcl
     void
     pcl::octree::OctreePointCloudAdjacencyContainer<pcl::PointXYZRGBA,pcl::SupervoxelClustering<pcl::PointXYZRGBA>::VoxelData>::addPoint (const pcl::PointXYZRGBA &new_point);
     
+    template<>
+    void
+    pcl::octree::OctreePointCloudAdjacencyContainer<pcl::PointXYZRGBIL,pcl::SupervoxelClustering<pcl::PointXYZRGBIL>::VoxelData>::addPoint (const pcl::PointXYZRGBIL &new_point);
+    
     //Explicit overloads for RGB types
     template<> void
     pcl::octree::OctreePointCloudAdjacencyContainer<pcl::PointXYZRGB,pcl::SupervoxelClustering<pcl::PointXYZRGB>::VoxelData>::computeData ();
     
     template<> void
     pcl::octree::OctreePointCloudAdjacencyContainer<pcl::PointXYZRGBA,pcl::SupervoxelClustering<pcl::PointXYZRGBA>::VoxelData>::computeData ();
+    
+    template<> void
+    pcl::octree::OctreePointCloudAdjacencyContainer<pcl::PointXYZRGBIL,pcl::SupervoxelClustering<pcl::PointXYZRGBIL>::VoxelData>::computeData ();
     
     //Explicit overloads for XYZ types
     template<>
@@ -753,6 +760,9 @@ namespace pcl
   
   template<> void
   pcl::SupervoxelClustering<pcl::PointXYZRGBA>::VoxelData::getPoint (pcl::PointXYZRGBA &point_arg ) const;
+  
+  template<> void
+  pcl::SupervoxelClustering<pcl::PointXYZRGBIL>::VoxelData::getPoint (pcl::PointXYZRGBIL &point_arg ) const;
   
   template<typename PointT> void
   pcl::SupervoxelClustering<PointT>::VoxelData::getPoint (PointT &point_arg ) const

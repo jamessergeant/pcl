@@ -55,6 +55,7 @@
   (pcl::PointXYZRGBA)           \
   (pcl::PointXYZRGB)            \
   (pcl::PointXYZRGBL)           \
+  (pcl::PointXYZRGBIL)           \
   (pcl::PointXYZHSV)            \
   (pcl::PointXY)                \
   (pcl::InterestPoint)          \
@@ -98,6 +99,7 @@
   (pcl::PointXYZRGBA)           \
   (pcl::PointXYZRGB)            \
   (pcl::PointXYZRGBL)           \
+  (pcl::PointXYZRGBIL)           \
   (pcl::PointXYZRGBNormal)      \
   (pcl::PointSurfel)            \
 
@@ -109,6 +111,7 @@
   (pcl::PointXYZRGBA)         \
   (pcl::PointXYZRGB)          \
   (pcl::PointXYZRGBL)         \
+  (pcl::PointXYZRGBIL)           \
   (pcl::PointXYZHSV)          \
   (pcl::InterestPoint)        \
   (pcl::PointNormal)          \
@@ -125,6 +128,7 @@
 #define PCL_XYZL_POINT_TYPES  \
   (pcl::PointXYZL)            \
   (pcl::PointXYZRGBL)         \
+  (pcl::PointXYZRGBIL)         \
   (pcl::PointXYZLNormal)
 
 // Define all point types that include normal[3] data
@@ -571,6 +575,22 @@ namespace pcl
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   };
 
+  struct EIGEN_ALIGN16 _PointXYZRGBIL
+  {
+    PCL_ADD_POINT4D; // This adds the members x,y,z which can also be accessed using the point (which is float[4])
+    PCL_ADD_RGB;
+    union
+    {
+      struct
+      {
+        float intensity;
+      };
+      float data_c[4];
+    };
+    uint32_t label;
+    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+  };
+
   PCL_EXPORTS std::ostream& operator << (std::ostream& os, const PointXYZRGB& p);
   /** \brief A point structure representing Euclidean xyz coordinates, and the RGB color.
     *
@@ -663,6 +683,53 @@ namespace pcl
     }
   
     friend std::ostream& operator << (std::ostream& os, const PointXYZRGBL& p);
+    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+  };
+
+  PCL_EXPORTS std::ostream& operator << (std::ostream& os, const PointXYZRGBIL& p);
+  struct EIGEN_ALIGN16 PointXYZRGBIL : public _PointXYZRGBIL
+  {
+    inline PointXYZRGBIL (const _PointXYZRGBIL &p)
+    {
+      x = p.x; y = p.y; z = p.z; data[3] = 1.0f;
+      rgba = p.rgba;
+      label = p.label;
+      intensity = p.intensity;
+    }
+
+    inline PointXYZRGBIL ()
+    {
+      x = y = z = 0.0f;
+      data[3] = 1.0f;
+      r = g = b = 0;
+      a = 255;
+      label = 255;
+      intensity = 0.0f;
+    }
+    inline PointXYZRGBIL (uint8_t _r, uint8_t _g, uint8_t _b, uint32_t _label)
+    {
+      x = y = z = 0.0f;
+      data[3] = 1.0f;
+      r = _r;
+      g = _g;
+      b = _b;
+      a = 255;
+      label = _label;
+      intensity = 0.0f;
+    }
+    inline PointXYZRGBIL (uint8_t _r, uint8_t _g, uint8_t _b, uint32_t _label, float _intensity)
+    {
+      x = y = z = 0.0f;
+      data[3] = 1.0f;
+      r = _r;
+      g = _g;
+      b = _b;
+      a = 255;
+      label = _label;
+      intensity = _intensity;
+    }
+  
+    friend std::ostream& operator << (std::ostream& os, const PointXYZRGBIL& p);
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   };
 
