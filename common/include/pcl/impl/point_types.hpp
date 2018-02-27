@@ -703,7 +703,7 @@ namespace pcl
       data[3] = 1.0f;
       r = g = b = 0;
       a = 255;
-      label = 255;
+      label = 0;
       intensity = 0.0f;
     }
     inline PointXYZRGBIL (uint8_t _r, uint8_t _g, uint8_t _b, uint32_t _label)
