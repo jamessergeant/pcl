@@ -41,8 +41,8 @@
 
 #include <pcl/gpu/segmentation/gpu_extract_clusters.h>
 
-void
-pcl::gpu::extractEuclideanClusters (const boost::shared_ptr<pcl::PointCloud<pcl::PointXYZ> >  &host_cloud_,
+template <typename PointT> void
+pcl::gpu::extractEuclideanClusters (const boost::shared_ptr<pcl::PointCloud<PointT> >  &host_cloud_,
                                     const pcl::gpu::Octree::Ptr                               &tree,
                                     float                                                     tolerance,
                                     std::vector<PointIndices>                                 &clusters,
@@ -80,15 +80,18 @@ pcl::gpu::extractEuclideanClusters (const boost::shared_ptr<pcl::PointCloud<pcl:
     // Create the query queue on the device, point based not indices
     pcl::gpu::Octree::Queries queries_device;
     // Create the query queue on the host
-	pcl::PointCloud<pcl::PointXYZ>::VectorType queries_host;
+	  pcl::PointCloud<pcl::PointXYZ>::VectorType queries_host;
+    PointT t = host_cloud_->points[i];
+    PointXYZ p;
+    p.x = t.x; p.y = t.y; p.z = t.z;
     // Push the starting point in the vector
-    queries_host.push_back (host_cloud_->points[i]);
+    queries_host.push_back (p);
     // Clear vector
     r.indices.clear();
     // Push the starting point in
-    r.indices.push_back(i);
+    r.indices.push_back(static_cast<int> (i));
 
-    unsigned int found_points = queries_host.size ();
+    unsigned int found_points = static_cast<unsigned int> (queries_host.size ());
     unsigned int previous_found_points = 0;
 
     pcl::gpu::NeighborIndices result_device;
@@ -176,8 +179,8 @@ pcl::gpu::extractEuclideanClusters (const boost::shared_ptr<pcl::PointCloud<pcl:
   }
 }
 
-void 
-pcl::gpu::EuclideanClusterExtraction::extract (std::vector<pcl::PointIndices> &clusters)
+template <typename PointT> void 
+pcl::gpu::EuclideanClusterExtraction<PointT>::extract (std::vector<pcl::PointIndices> &clusters)
 {
 /*
   // Initialize the GPU search tree
@@ -206,4 +209,6 @@ pcl::gpu::EuclideanClusterExtraction::extract (std::vector<pcl::PointIndices> &c
   //std::sort (clusters.rbegin (), clusters.rend (), comparePointClusters);
 }
 
+#define PCL_INSTANTIATE_extractEuclideanClusters(T) template void PCL_EXPORTS pcl::gpu::extractEuclideanClusters (const boost::shared_ptr<pcl::PointCloud<T> >  &, const pcl::gpu::Octree::Ptr &,float, std::vector<PointIndices> &, unsigned int, unsigned int);
+#define PCL_INSTANTIATE_EuclideanClusterExtraction(T) template class PCL_EXPORTS pcl::gpu::EuclideanClusterExtraction<T>;
 #endif //PCL_GPU_SEGMENTATION_IMPL_EXTRACT_CLUSTERS_H_

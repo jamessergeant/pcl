@@ -51,8 +51,8 @@ namespace pcl
 {
   namespace gpu
   {
-    void
-    extractEuclideanClusters (const boost::shared_ptr<pcl::PointCloud<pcl::PointXYZ> >  &host_cloud_,
+  template <typename PointT> void 
+    extractEuclideanClusters (const boost::shared_ptr<pcl::PointCloud<PointT> >  &host_cloud_,
                               const pcl::gpu::Octree::Ptr                               &tree,
                               float                                                     tolerance,
                               std::vector<PointIndices>                                 &clusters,
@@ -63,13 +63,14 @@ namespace pcl
     * \author Koen Buys, Radu Bogdan Rusu
     * \ingroup segmentation
     */
+    template <typename PointT>
     class EuclideanClusterExtraction
     {
       public:
         typedef pcl::PointXYZ PointType;
-        typedef pcl::PointCloud<pcl::PointXYZ> PointCloudHost;
-        typedef PointCloudHost::Ptr PointCloudHostPtr;
-        typedef PointCloudHost::ConstPtr PointCloudHostConstPtr;
+        typedef pcl::PointCloud<PointT> PointCloudHost;
+        typedef typename PointCloudHost::Ptr PointCloudHostPtr;
+        typedef typename PointCloudHost::ConstPtr PointCloudHostConstPtr;
 
         typedef PointIndices::Ptr PointIndicesPtr;
         typedef PointIndices::ConstPtr PointIndicesConstPtr;
