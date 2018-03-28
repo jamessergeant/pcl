@@ -51,13 +51,14 @@ namespace pcl
 {
   namespace gpu
   {
-  template <typename PointT> void 
+    template <typename PointT> void 
     extractEuclideanClusters (const boost::shared_ptr<pcl::PointCloud<PointT> >  &host_cloud_,
                               const pcl::gpu::Octree::Ptr                               &tree,
                               float                                                     tolerance,
                               std::vector<PointIndices>                                 &clusters,
                               unsigned int                                              min_pts_per_cluster, 
-                              unsigned int                                max_pts_per_cluster);
+                              unsigned int                                max_pts_per_cluster,
+                              int                                                       min_query_points);
 
    /** \brief @b EuclideanClusterExtraction represents a segmentation class for cluster extraction in an Euclidean sense, depending on pcl::gpu::octree
     * \author Koen Buys, Radu Bogdan Rusu
@@ -67,7 +68,6 @@ namespace pcl
     class EuclideanClusterExtraction
     {
       public:
-        typedef pcl::PointXYZ PointType;
         typedef pcl::PointCloud<PointT> PointCloudHost;
         typedef typename PointCloudHost::Ptr PointCloudHostPtr;
         typedef typename PointCloudHost::ConstPtr PointCloudHostConstPtr;
@@ -82,7 +82,7 @@ namespace pcl
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         /** \brief Empty constructor. */
-        EuclideanClusterExtraction () : min_pts_per_cluster_ (1), max_pts_per_cluster_ (std::numeric_limits<int>::max ())
+        EuclideanClusterExtraction () : min_pts_per_cluster_ (1), max_pts_per_cluster_ (std::numeric_limits<int>::max ()), min_query_points_ (10)
         {};
 
         /** \brief the destructor */
@@ -134,6 +134,11 @@ namespace pcl
           */
         void extract (std::vector<pcl::PointIndices> &clusters);
 
+        /** \brief Set the minimum number of points to be queried before switch to GPU implementation.
+          * \param min_query_points the minimum number of query points
+          */
+        inline void setMinQueryPoints(int min_query_points) {min_query_points_ = min_query_points;}
+
       protected:
         /** \brief the input cloud on the GPU */
         CloudDevice input_;
@@ -152,6 +157,9 @@ namespace pcl
 
         /** \brief The maximum number of points that a cluster needs to contain in order to be considered valid (default = MAXINT). */
         int max_pts_per_cluster_;
+
+        /** \brief The minimum number of points before switching to GPU */
+        int min_query_points_;
 
         /** \brief Class getName method. */
         virtual std::string getClassName () const { return ("gpu::EuclideanClusterExtraction"); }
